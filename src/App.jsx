@@ -1,42 +1,93 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { logos } from "./assets/logos.js";
+import BestTimes from "./component/BestTimes.jsx";
 import Cards from "./component/Cards.jsx";
+import MainMenu from "./component/MainMenu.jsx";
+import useLocalStorage from "./hooks/useLocalStorage.jsx";
 
-const logosList = [...logos, ...logos].sort((a) => {
-  a = Math.random() - 0.5;
-  return a;
-});
+const shuffleList = () => {
+  const logosList = [...logos, ...logos].sort(() => Math.random() - 0.5);
+  return logosList;
+};
 
-console.log(logosList);
-
-const cardToFind = "";
+const cardToFind = [];
+const initialFoundCards = [];
 
 function App() {
+  const [newGame, setNewGame] = useState(false);
+  const [cardList, setCardList] = useState([]);
   const [selectedCard, setSelectedCard] = useState(cardToFind);
-  const [foundCards, setFoundCards] = useState([]);
+  const [foundCards, setFoundCards] = useState(initialFoundCards);
+  const [gameTime, setGameTime] = useState(0);
+  const [gameTries, setGameTries] = useState(0);
+  const [fromLocal, setFromLocal] = useLocalStorage("score");
 
-  const handleCard = (name, id) => {
-    if (foundCards.includes(name) || selectedCard.id === id) return;
+  useEffect(() => {
+    if (newGame) {
+      setCardList(shuffleList());
+      const timeCounter = setInterval(() => {
+        setGameTime((prev) => prev + 1);
+      }, 1000);
 
-    if (selectedCard) {
-      if (selectedCard.name === name) {
-        setFoundCards([...foundCards, name]);
-      }
-      return setSelectedCard(cardToFind);
+      return () => clearInterval(timeCounter);
+    } else {
+      setCardList([]);
+      setSelectedCard(cardToFind);
+      setFoundCards(initialFoundCards);
+      setGameTime(0);
+      setGameTries(0);
     }
-    setSelectedCard({ name, id });
-  };
+  }, [newGame]);
+
+  useEffect(() => {
+    if (selectedCard.length > 1) {
+      if (selectedCard[0] === selectedCard[1]) {
+        setFoundCards([...foundCards, selectedCard[0]]);
+      }
+      setSelectedCard(cardToFind);
+    }
+  }, [selectedCard]);
+
+  useEffect(() => {
+    if (foundCards.length && foundCards.length === cardList.length / 2) {
+      alert(
+        `Has completado el juego en ${gameTime} segundos y con ${gameTries} intentos.`
+      );
+      setFromLocal([...fromLocal, { time: gameTime, tries: gameTries }]);
+      setNewGame(false);
+    }
+  }, [foundCards]);
 
   return (
     <StyleGameContainer>
-      <StyleCardsContainer>
-        {logosList.map((logo, ind) => {
-          return (
-            <Cards key={ind} logo={logo} ind={ind} handleCard={handleCard} />
-          );
-        })}
-      </StyleCardsContainer>
+      <MainMenu
+        gameTime={gameTime}
+        gameTries={gameTries}
+        newGame={newGame}
+        setNewGame={setNewGame}
+      />
+      {newGame ? (
+        <StyleCardsContainer>
+          {cardList.map((logo, ind) => {
+            return (
+              <Cards
+                key={ind}
+                logo={logo}
+                selectedCard={selectedCard}
+                setSelectedCard={setSelectedCard}
+                foundCards={foundCards}
+                setFoundCards={setFoundCards}
+                cardList={cardList}
+                setGameTries={setGameTries}
+                gameTries={gameTries}
+              />
+            );
+          })}
+        </StyleCardsContainer>
+      ) : (
+        <BestTimes fromLocal={fromLocal} />
+      )}
     </StyleGameContainer>
   );
 }
@@ -45,13 +96,28 @@ export default App;
 
 const StyleGameContainer = styled.main`
   margin: auto;
-  width: 40%;
+  padding: 2rem;
+  width: 100vw;
+  max-width: 1000px;
   display: flex;
-  place-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 `;
 
 const StyleCardsContainer = styled.div`
+  width: 60%;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
+
+  @media screen and (max-width: 900px) {
+    justify-content: space-around;
+    gap: 0.5rem;
+    width: 70%;
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 90%;
+  }
 `;

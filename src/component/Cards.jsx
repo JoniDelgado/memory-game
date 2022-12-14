@@ -1,10 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import fondo from "../assets/images/fondo.jpg";
 
-const Cards = ({ logo, ind, handleCard }) => {
+const Cards = ({
+  logo,
+  selectedCard,
+  setSelectedCard,
+  foundCards,
+  cardList,
+  setGameTries,
+  gameTries,
+}) => {
+  const [flipCard, setFlipCard] = useState(false);
+  useEffect(() => {
+    setFlipCard(false);
+  }, [cardList]);
+
+  useEffect(() => {
+    if (!selectedCard.length) {
+      const found = foundCards.includes(logo.name);
+      setGameTries(gameTries + 1);
+
+      if (!found) {
+        setTimeout(() => {
+          setFlipCard(false);
+        }, 900);
+      }
+    } else return;
+  }, [selectedCard]);
+
+  const handleFlipCard = (name) => {
+    if (flipCard) return;
+    setFlipCard(true);
+    setSelectedCard([...selectedCard, name]);
+  };
+
   return (
-    <StyleCardImage onClick={() => handleCard(logo.name, ind)}>
+    <StyleCardImage
+      flipCard={flipCard}
+      onClick={() => handleFlipCard(logo.name)}
+    >
       <div></div>
       <img src={logo.img} alt={logo.name} />
     </StyleCardImage>
@@ -30,6 +65,7 @@ const StyleCardImage = styled.div`
     background-image: url(${fondo});
     background-position: center;
     background-size: cover;
+    opacity: ${({ flipCard }) => (!flipCard ? 0.5 : 0)};
     transition: all linear 0.3s;
   }
 

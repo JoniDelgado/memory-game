@@ -13,82 +13,81 @@ import php from "./images/php.png";
 import react from "./images/react.png";
 import sass from "./images/sass.png";
 import typescript from "./images/typescript.png";
-import windows from "./images/windows.png";
 
 export const logos = [
   {
     name: "bootstrap",
     img: bootstrap,
-    status: "",
+    isMatch: false,
   },
   {
     name: "csharp",
     img: csharp,
-    status: "",
+    isMatch: false,
   },
   {
     name: "css",
     img: css,
-    status: "",
+    isMatch: false,
   },
   {
     name: "git",
     img: git,
-    status: "",
+    isMatch: false,
   },
   {
     name: "github",
     img: github,
-    status: "",
+    isMatch: false,
   },
   {
     name: "gitlab",
     img: gitlab,
-    status: "",
+    isMatch: false,
   },
   {
     name: "html",
     img: html,
-    status: "",
+    isMatch: false,
   },
   {
     name: "java",
     img: java,
-    status: "",
+    isMatch: false,
   },
   {
     name: "linux",
     img: linux,
-    status: "",
+    isMatch: false,
   },
   {
     name: "node",
     img: node,
-    status: "",
+    isMatch: false,
   },
   {
     name: "php",
     img: php,
-    status: "",
+    isMatch: false,
   },
   {
     name: "react",
     img: react,
-    status: "",
+    isMatch: false,
   },
   {
     name: "sass",
     img: sass,
-    status: "",
+    isMatch: false,
   },
   {
     name: "typescript",
     img: typescript,
-    status: "",
+    isMatch: false,
   },
   {
     name: "js",
     img: js,
-    status: "",
+    isMatch: false,
   },
 ];
