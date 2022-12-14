@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import fondo from "../assets/images/fondo.jpg";
+import fondo from "../assets/images/fondo.png";
 
 const Cards = ({
   logo,
@@ -53,6 +53,7 @@ const StyleCardImage = styled.div`
   position: relative;
   border: 2px solid black;
   border-radius: 5px;
+  background-color: #e6e6e6;
   cursor: pointer;
   transition: all ease 0.4s;
 
@@ -62,10 +63,12 @@ const StyleCardImage = styled.div`
     position: absolute;
     top: 0;
     left: 0;
+    border-radius: 5px;
+    background-color: #3b475f;
     background-image: url(${fondo});
     background-position: center;
     background-size: cover;
-    opacity: ${({ flipCard }) => (!flipCard ? 0.5 : 0)};
+    opacity: ${({ flipCard }) => (!flipCard ? 1 : 0)};
     transition: all linear 0.3s;
   }
 

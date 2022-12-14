@@ -103,6 +103,10 @@ const StyleGameContainer = styled.main`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+
+  @media screen and (max-width: 500px) {
+    padding: 0.5rem;
+  }
 `;
 
 const StyleCardsContainer = styled.div`
@@ -117,7 +121,7 @@ const StyleCardsContainer = styled.div`
     width: 70%;
   }
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     width: 90%;
   }
 `;
