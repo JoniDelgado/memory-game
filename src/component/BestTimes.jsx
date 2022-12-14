@@ -12,7 +12,7 @@ const BestTimes = ({ fromLocal }) => {
   return (
     <StyleScoreContainer>
       <h1>ULTIMOS RESULTADOS</h1>
-      {lastBestTimes() ? (
+      {lastBestTimes().length ? (
         lastBestTimes().map((score, index) => {
           return (
             <div key={index}>
