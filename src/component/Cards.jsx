@@ -2,35 +2,17 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import fondo from "../assets/images/fondo.png";
 
-const Cards = ({
-  logo,
-  selectedCard,
-  setSelectedCard,
-  foundCards,
-  cardList,
-  setGameTries,
-  gameTries,
-}) => {
+const Cards = ({ logo, selectedCard, setSelectedCard, foundCards }) => {
   const [flipCard, setFlipCard] = useState(false);
-  useEffect(() => {
-    setFlipCard(false);
-  }, [cardList]);
 
   useEffect(() => {
-    if (!selectedCard.length) {
-      const found = foundCards.includes(logo.name);
-      setGameTries(gameTries + 1);
+    if (foundCards.includes(logo.name)) return;
 
-      if (!found) {
-        setTimeout(() => {
-          setFlipCard(false);
-        }, 900);
-      }
-    } else return;
+    if (!selectedCard.length) setFlipCard(false);
   }, [selectedCard]);
 
   const handleFlipCard = (name) => {
-    if (flipCard) return;
+    if (flipCard || selectedCard.length === 2) return;
     setFlipCard(true);
     setSelectedCard([...selectedCard, name]);
   };

@@ -11,13 +11,12 @@ const shuffleList = () => {
   return logosList;
 };
 
-const cardToFind = [];
 const initialFoundCards = [];
 
 function App() {
   const [newGame, setNewGame] = useState(false);
   const [cardList, setCardList] = useState([]);
-  const [selectedCard, setSelectedCard] = useState(cardToFind);
+  const [selectedCard, setSelectedCard] = useState([]);
   const [foundCards, setFoundCards] = useState(initialFoundCards);
   const [gameTime, setGameTime] = useState(0);
   const [gameTries, setGameTries] = useState(0);
@@ -33,7 +32,7 @@ function App() {
       return () => clearInterval(timeCounter);
     } else {
       setCardList([]);
-      setSelectedCard(cardToFind);
+      setSelectedCard([]);
       setFoundCards(initialFoundCards);
       setGameTime(0);
       setGameTries(0);
@@ -41,11 +40,14 @@ function App() {
   }, [newGame]);
 
   useEffect(() => {
-    if (selectedCard.length > 1) {
+    if (selectedCard.length === 2) {
       if (selectedCard[0] === selectedCard[1]) {
         setFoundCards([...foundCards, selectedCard[0]]);
       }
-      setSelectedCard(cardToFind);
+      setTimeout(() => {
+        setGameTries(gameTries + 1);
+        setSelectedCard([]);
+      }, 1000);
     }
   }, [selectedCard]);
 
